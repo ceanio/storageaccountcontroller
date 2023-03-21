@@ -1,0 +1,186 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    {{- include "storage-account.labels" . | nindent 4 }}
+  name: {{ include "storage-account.name" . }}-leader-election-role
+  namespace: {{ include "storage-account.name" . }}-system
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: {{ include "storage-account.name" . }}-manager-role
+rules:
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccountkeyregenerators
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccountkeyregenerators/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccountkeyregenerators/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccounts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccounts/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccounts/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - delete
+  - get
+  - patch
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    {{- include "storage-account.labels" . | nindent 4 }}
+  name: {{ include "storage-account.name" . }}-metrics-reader
+rules:
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    {{- include "storage-account.labels" . | nindent 4 }}
+  name: {{ include "storage-account.name" . }}-proxy-role
+rules:
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    {{- include "storage-account.labels" . | nindent 4 }}
+  name: {{ include "storage-account.name" . }}-leader-election-rolebinding
+  namespace: {{ include "storage-account.name" . }}--system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "storage-account.name" . }}-leader-election-role
+subjects:
+- kind: ServiceAccount
+  name: {{ include "storage-account.name" . }}-controller-manager
+  namespace: {{ include "storage-account.name" . }}-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    {{- include "storage-account.labels" . | nindent 4 }}
+  name: {{ include "storage-account.name" . }}-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "storage-account.name" . }}-manager-role
+subjects:
+- kind: ServiceAccount
+  name: {{ include "storage-account.name" . }}-controller-manager
+  namespace: {{ include "storage-account.name" . }}-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    {{- include "storage-account.labels" . | nindent 4 }}
+  name: {{ include "storage-account.name" . }}-proxy-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "storage-account.name" . }}-proxy-role
+subjects:
+- kind: ServiceAccount
+  name: {{ include "storage-account.name" . }}-controller-manager
+  namespace: {{ include "storage-account.name" . }}-system

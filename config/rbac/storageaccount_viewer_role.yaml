@@ -1,0 +1,27 @@
+# permissions for end users to view storageaccounts.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: storageaccount-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: storage-account
+    app.kubernetes.io/part-of: storage-account
+    app.kubernetes.io/managed-by: kustomize
+  name: storageaccount-viewer-role
+rules:
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccounts
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccounts/status
+  verbs:
+  - get

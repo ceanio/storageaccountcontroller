@@ -1,0 +1,5 @@
+apiVersion: blob.arcblob.poc/v1
+kind: StorageAccount
+metadata:
+  name: testaccount4
+spec:

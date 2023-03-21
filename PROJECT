@@ -1,0 +1,25 @@
+domain: arcblob.poc
+layout:
+- go.kubebuilder.io/v3
+projectName: storage-account
+repo: arcblob.poc/storageaccount
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: arcblob.poc
+  group: blob
+  kind: StorageAccount
+  path: arcblob.poc/storageaccount/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: arcblob.poc
+  group: blob
+  kind: StorageAccountKeyRegenerator
+  path: arcblob.poc/storageaccount/api/v1
+  version: v1
+version: "3"

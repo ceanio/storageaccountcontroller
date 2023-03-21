@@ -1,0 +1,27 @@
+# permissions for end users to view storageaccountkeyregenerators.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: storageaccountkeyregenerator-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: storage-account
+    app.kubernetes.io/part-of: storage-account
+    app.kubernetes.io/managed-by: kustomize
+  name: storageaccountkeyregenerator-viewer-role
+rules:
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccountkeyregenerators
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - blob.arcblob.poc
+  resources:
+  - storageaccountkeyregenerators/status
+  verbs:
+  - get

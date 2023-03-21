@@ -1,0 +1,38 @@
+{
+    "mappings": [
+        {
+            "ApiVersion": "2022-10-11-deme",
+            "ResourceType": "storage-accounts",
+            "ProviderName": "storage-accounts-provider",
+            "ResourceMapping":
+            {
+                "Version": "v1",
+                "Group": "blob.arcblob.poc",
+                "Kind": "StorageAccount",
+                "Name": "storageaccounts",
+                "IsAsync": "false",
+                "Liquid": {
+                    "AzureToKubernetes": "<File in Helm Package - e.g. azure/virtualMachines/myAzureTransform.json>",
+                    "KubernetesToAzure": "<File in Helm Package - e.g. azure/virtualMachines/myKubernetesTransform.json>"
+                }
+            }
+        },
+        {
+            "ApiVersion": "2022-10-11-demo",
+            "ResourceType": "storage-account-key-regenerators",
+            "ProviderName": "storage-account-key-regenerators-provider",
+            "ResourceMapping":
+            {
+                "Version": "v1",
+                "Group": "blob.arcblob.poc",
+                "Kind": "StorageAccountKeyRegenerator",
+                "Name": "storageaccountkeyregenerators",
+                "IsAsync": "false",
+                "Liquid": {
+                    "AzureToKubernetes": "<File in Helm Package - e.g. azure/virtualMachines/myAzureTransform.json>",
+                    "KubernetesToAzure": "<File in Helm Package - e.g. azure/virtualMachines/myKubernetesTransform.json>"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+apiVersion: blob.arcblob.poc/v1
+kind: StorageAccountKeyRegenerator
+metadata:
+  name: storageaccountkeyregenerator-sample2
+spec:
+  accountName: testaccount3
+  keyName: key2
